@@ -28,7 +28,7 @@ class DQN:
         self.epsilon_decay = 0.997
         self.epsilon_min = 0.02
 
-        self.env = gym.make('CartPole-v1')
+        self.env = gym.make('CartPole-v0')
 
     def build_model(self):
         inputs = Input(shape=(4,))
@@ -152,5 +152,5 @@ class DQN:
 
 
 model = DQN()
-# model.train(100, 32)
+model.train(100, 32)
 model.play()

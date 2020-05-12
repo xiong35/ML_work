@@ -9,6 +9,7 @@
 
 自己写几句话并打上标签
 
+```python
     # preprocessing word index
     def loadDataSet():
         postingList = [
@@ -21,11 +22,13 @@
         ]
         classVec = [0, 1, 0, 1, 0, 1]
         return postingList, classVec
+```
 
 ## 用向量表示句子
 
 将所有出现过的词列成表
 
+```python
     # creat a list that contains all the words
     def createVocabList(dataSet):
         vocabSet = set([])
@@ -35,35 +38,41 @@
     # for each comment, create a vector
     # vocabList rf the set of all the elements
     # inputSet  rf the set to be converted to vector
+```
 
 方法1：one-hot编码
 
+```python
     def bagOfWords2Vec(vocabList, inputSet):
         returnVec = [0]*len(vocabList)
         for word in inputSet:
             if word in vocabList:
                 returnVec[vocabList.index(word)] = 1
         return returnVec
+```
 
 方法2：bag of words
 
+```python
     def bagOfWords2Vec(vocabList, inputSet):
         returnVec = [0]*len(vocabList)
         for word in inputSet:
             if word in vocabList:
                 returnVec[vocabList.index(word)] += 1
         return returnVec
+```
 
 以上两种方法取其一即可
 
 ## 朴素贝叶斯
 
-p(c|w) = \frac{p(w|c)\cdot p(c)}{p(w)}  
+$p(c|w) = \frac{p(w|c)\cdot p(c)}{p(w)}$
 
 其中：c代表category，w代表words  
 
 ### 具体实现
 
+```python
     # p1 rf p(negative)
     def trainNB0(trainMatrix, trainCategory):
         numTrainDocs = len(trainMatrix)
@@ -99,9 +108,11 @@ p(c|w) = \frac{p(w|c)\cdot p(c)}{p(w)}
         # return the vector of p(w_i|c_0), p(w_i|c_1)
         # and p(c_1)
         return p0Vect, p1Vect, pNegative
+```
 
 ## 分类器
 
+```python
     def classifyNB(vec2Classify, p0Vec, p1Vec, pClass1):
         p1 = sum(vec2Classify*p1Vec)+np.log(pClass1)
         p0 = sum(vec2Classify*p0Vec)+np.log(1-pClass1)
@@ -109,16 +120,20 @@ p(c|w) = \frac{p(w|c)\cdot p(c)}{p(w)}
             return 1
         else:
             return 0
+```
 
 ## 对语段的预处理
 
+```python
     def textParse(bigString):
         import re
         listOfTokens = re.split(r'\w*', bigString)
         return [tok.lower() for tok in listOfTokens if len(tok) > 2]
+```
 
 ## 测试
 
+```python
     def testNB():
         listOPosts, listClasses = loadDataSet()
         myVocabList = createVocabList(listOPosts)
@@ -136,3 +151,4 @@ p(c|w) = \frac{p(w|c)\cdot p(c)}{p(w)}
         print(testEntry, 'classified as: ', classifyNB(thisDoc, p0V, p1V, pNe))
 
     testNB()
+```
